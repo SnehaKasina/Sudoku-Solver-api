@@ -29,6 +29,7 @@ public class SudukoController {
     }
     @PostMapping("/api/email")
     public boolean sendEmail(@RequestBody EmailRequest emailRequest) {
+        boolean isSolved = solver.solve(emailRequest.getSolvedPuzzle());
         return amazonSESSample.sendEmail(emailRequest);
     }
 }
