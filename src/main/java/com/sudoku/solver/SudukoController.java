@@ -3,12 +3,13 @@ package com.sudoku.solver;
 import com.sudoku.solver.service.AmazonSESSample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Configuration
+@CrossOrigin("*")
 public class SudukoController {
 
     @Autowired
@@ -28,8 +29,9 @@ public class SudukoController {
         }
     }
     @PostMapping("/api/email")
-    public boolean sendEmail(@RequestBody EmailRequest emailRequest) {
+    public int[][] sendEmail(@RequestBody EmailRequest emailRequest) {
         boolean isSolved = solver.solve(emailRequest.getSolvedPuzzle());
-        return amazonSESSample.sendEmail(emailRequest);
+        boolean isEmailSent =  amazonSESSample.sendEmail(emailRequest);
+        return emailRequest.getSolvedPuzzle();
     }
 }
